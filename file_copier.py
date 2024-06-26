@@ -21,7 +21,12 @@ def setup_logging(log_file: str, log_level: str) -> None:
 def is_text_file(file_path: str) -> bool:
     """Check if a file is a text file based on its MIME type."""
     mime_type, _ = mimetypes.guess_type(file_path)
-    return mime_type is not None and mime_type.startswith('text/')
+    if mime_type is not None and mime_type.startswith('text/'):
+        return True
+    
+    # Add common text file extensions that might not be recognized by mimetypes
+    text_extensions = {'.txt', '.md', '.py', '.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.json', '.xml', '.yaml', '.yml'}
+    return os.path.splitext(file_path)[1].lower() in text_extensions
 
 def copy_file_contents(file_path: str, out_file) -> None:
     """Copy the contents of a file to the output file."""
